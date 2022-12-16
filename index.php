@@ -1,8 +1,25 @@
-<?php 
+<?php
 session_start();
-if(!(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"])) {
-    header("location: login.php");  
+require 'db/conn.php';
+
+if (!(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"])) {
+    header("location: login.php");
 }
+
+$result = mysqli_query($conn, "select count(1) FROM emp_master");
+$row = mysqli_fetch_array($result);
+
+$emp_count = $row[0];
+
+$result = mysqli_query($conn, "select count(1) FROM tasks where emp_id = " . $_SESSION['emp_id']);
+$row = mysqli_fetch_array($result);
+
+$task_count = $row[0];
+
+$result = mysqli_query($conn, "select salary FROM emp_master where emp_id = " . $_SESSION['emp_id']);
+$row = mysqli_fetch_array($result);
+
+$salary = $row[0];
 
 ?>
 
@@ -19,7 +36,7 @@ if(!(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"])) {
     <meta name="author" content="">
     <!-- <meta http-equiv="refresh" content="2"> -->
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>EMS - Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -57,7 +74,7 @@ if(!(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"])) {
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
                     </div>
 
                     <!-- Content Row -->
@@ -70,8 +87,8 @@ if(!(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                                Total Employees</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $emp_count ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -88,8 +105,8 @@ if(!(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                                Salary</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $salary ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -133,11 +150,11 @@ if(!(isset($_SESSION["isLoggedIn"]) && $_SESSION["isLoggedIn"])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                Pending Tasks</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $task_count ?></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>

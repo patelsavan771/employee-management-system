@@ -1,36 +1,10 @@
 <?php
 
 session_start();
-if (!$_SESSION["isLoggedIn"]) {
-    header("Location:login.php");
-}
 
 require "db/conn.php";
 
-
-// if (!$ret) {
-//     die("problem in showing employees.");
-// } else {
-//     echo "yesss";
-// while ($r = mysqli_fetch_assoc($ret)) {
-//     echo "<tr>";
-//     echo "<td>" . $r['emp_id'] . "</td>";
-//     echo "<td>" . $r['dept_id'] . "</td>";
-//     echo "<td>" . $r['fname'] . "</td>";
-//     echo "<td>" . $r['lname'] . "</td>";
-//     echo "<td>" . $r['email'] . "</td>";
-//     echo "<td>" . $r['phone_no'] . "</td>";
-//     echo "<td>" . $r['salary'] . "</td>";
-//     echo "<td>" . $r['joining_date'] . "</td>";
-//     echo "<td>" . $r['birth_date'] . "</td>";
-//     echo "</tr>";
-// }
-// }
-
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +17,7 @@ require "db/conn.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>View Employees</title>
+    <title>SB Admin 2 - Tables</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -87,85 +61,84 @@ require "db/conn.php";
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary"></h6>
+                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
+                                            <th>Task id</th>
                                             <th>Emp id</th>
-                                            <th>Dept id</th>
                                             <th>FName</th>
                                             <th>LName</th>
                                             <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Salary</th>
-                                            <th>Join Date</th>
-                                            <th>Birth Date</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Assign Date</th>
+                                            <th>Deadline</th>
                                             <th>Update</th>
-                                            <th>Delete</th>
+                                            <th>Remove</th>
                                         </tr>
                                     </thead>
-
-                                    <?php
-                                    $q = "select * from emp_master order by emp_id";
-                                    $ret = mysqli_query($conn, $q);
-                                    if (!$ret) {
-                                        die("Problem in showing employees.");
-                                    }
-
-                                    echo "<tbody>";
-                                    while ($r = mysqli_fetch_assoc($ret)) {
-                                        echo "<tr>";
-                                        echo "<td>" . $r['emp_id'] . "</td>";
-                                        echo "<td>" . $r['dept_id'] . "</td>";
-                                        echo "<td>" . $r['fname'] . "</td>";
-                                        echo "<td>" . $r['lname'] . "</td>";
-                                        echo "<td>" . $r['email'] . "</td>";
-                                        echo "<td>" . $r['phone_no'] . "</td>";
-                                        echo "<td>" . $r['salary'] . "</td>";
-                                        echo "<td>" . $r['joining_date'] . "</td>";
-                                        echo "<td>" . $r['birth_date'] . "</td>";
-
-                                        echo "<td>
-                                                        <a href='updateEmp.php?emp_id=" . $r['emp_id'] . "' class='btn btn-success btn-icon-split'>
-                                                            <span class='text'>Update</span>
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        <a href='deleteEmp.php?emp_id=" . $r['emp_id'] . "' class='btn btn-danger btn-icon-split'>
-                                                            <span class='text'>Delete</span>
-                                                        </a>
-                                                    </td>";
-
-
-                                        echo "</tr>";
-                                    }
-
-                                    echo "</tbody>";
-                                    ?>
-
-
-
                                     <tfoot>
                                         <tr>
+                                            <th>Task id</th>
                                             <th>Emp id</th>
-                                            <th>Dept id</th>
                                             <th>FName</th>
                                             <th>LName</th>
                                             <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Salary</th>
-                                            <th>Join Date</th>
-                                            <th>Birth Date</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Assign Date</th>
+                                            <th>Deadline</th>
                                             <th>Update</th>
-                                            <th>Delete</th>
+                                            <th>Remove</th>
+
+                                            
+                                            
                                         </tr>
                                     </tfoot>
+                                    <tbody>
 
+                                        <?php
 
+                                        // $q = "SELECT tasks.task_id,  from tasks";
 
+                                        $q = "select *
+                                        from tasks inner join emp_master 
+                                          on tasks.emp_id=emp_master.emp_id";
+
+                                        // $q = "SELECT `tasks.task_id`, `tasks.emp_id`, `tasks.title`, `tasks.description`, `tasks.assign_date`, `tasks.deadline`, emp_master.fname, emp_master.lname, emp_master.email FROM `tasks`, emp_master WHERE tasks.emp_id = emp_master.emp_id";
+                                        $ret = mysqli_query($conn, $q);
+                                        while ($r = mysqli_fetch_assoc($ret)) {
+                                            echo "<tr>";
+                                            echo "<td>" . $r['task_id'] . "</td>";
+                                            echo "<td>" . $r['emp_id'] . "</td>";
+                                            echo "<td>" . $r['fname'] . "</td>";
+                                            echo "<td>" . $r['lname'] . "</td>";
+                                            echo "<td>" . $r['email'] . "</td>";
+                                            echo "<td>" . $r['title'] . "</td>";
+                                            echo "<td>" . $r['description'] . "</td>";
+                                            echo "<td>" . $r['assign_date'] . "</td>";
+                                            echo "<td>" . $r['deadline'] . "</td>";
+
+                                            echo "<td>
+                                            <a href='updateTask.php?tid=".$r['task_id']."' class='btn btn-success btn-icon-split'>
+                                                <span class='text'>Update</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href='deleteTask.php?tid=".$r['task_id']."' class='btn btn-danger btn-icon-split'>
+                                                <span class='text'>Delete</span>
+                                            </a>
+                                        </td>";
+
+                                            echo "</tr>";
+                                        }
+                                        ?>
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

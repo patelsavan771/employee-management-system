@@ -29,7 +29,19 @@
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                    <?php
+                        // require "db/conn.php";
+                        if($_SESSION["isLoggedIn"]) {
+                            $q = "select fname, lname from emp_master where emp_id = '".$_SESSION["emp_id"]."'";
+                            $ret = mysqli_query($conn, $q);
+                            while($row = mysqli_fetch_assoc($ret)) {
+                                $name = $row['fname']." ".$row['lname'];
+                            }
+                            echo $name;
+                        }
+                    ?>
+                </span>
                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
             </a>
             <!-- Dropdown - User Information -->

@@ -28,7 +28,7 @@ if (!isset($_SESSION["isLoggedIn"])) {
     } else {
         echo "
         <script>
-        alert('Problem occure.');
+        //alert('Problem occure.');
         window.location = 'addemp.html';
         </script>
         ";

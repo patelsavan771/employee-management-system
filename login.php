@@ -1,8 +1,11 @@
 <?php
 
 session_start();
-
 require "db/conn.php";
+
+if (isset($_SESSION["isLoggedIn"])) {
+    header("location:index.php");
+}
 
 if (isset($_POST["login"]) && isset($_POST["email"]) && $_POST["email"] != "") {
     $email = $_POST["email"];
@@ -10,6 +13,11 @@ if (isset($_POST["login"]) && isset($_POST["email"]) && $_POST["email"] != "") {
 
     if (isValidUser($conn, $email, $password)) {
         $_SESSION["isLoggedIn"] = true;
+        $_SESSION["isAdmin"] = false;
+        $_SESSION['emp_id'] = getEmpId($conn, $email);
+        if (strcmp($email, "admin@ems.com") == 0) {
+            $_SESSION["isAdmin"] = true;
+        }
         header("location: index.php");
     } else {
         echo "
@@ -20,17 +28,7 @@ if (isset($_POST["login"]) && isset($_POST["email"]) && $_POST["email"] != "") {
     }
 }
 
-
-
-
 ?>
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
